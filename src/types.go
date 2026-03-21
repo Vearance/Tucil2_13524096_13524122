@@ -25,4 +25,9 @@ type OctreeNode struct {
 	Cube Cube
 	Child [8]*OctreeNode
 	isLastNode bool
+	triangles []Triangle
+}
+
+type Voxel struct {
+	Cube Cube
 }
