@@ -9,3 +9,13 @@ type Vertex struct {
 type Triangle struct {
     V1, V2, V3 Vertex
 }
+
+// Axis-Aligned Bounding Box (AABB)
+type BoundingBox struct {
+	Min, Max Vertex
+}
+
+type Cube struct {
+	Min Vertex  // smallest coordinate of the cube
+	Size float64
+}
