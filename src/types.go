@@ -15,7 +15,14 @@ type BoundingBox struct {
 	Min, Max Vertex
 }
 
+// bounding box is not a cube, so we'll make it a cube
 type Cube struct {
 	Min Vertex  // smallest coordinate of the cube
 	Size float64
+}
+
+type OctreeNode struct {
+	Cube Cube
+	Child [8]*OctreeNode
+	isLastNode bool
 }
