@@ -15,13 +15,13 @@ func getBoundingBox(vertex []Vertex) BoundingBox {
 			min.Z = coor.Z
 		}
 
-		if coor.X > min.X {
+		if coor.X > max.X {
 			max.X = coor.X
 		}
-		if coor.Y > min.Y {
+		if coor.Y > max.Y {
 			max.Y = coor.Y
 		}
-		if coor.Z > min.Z {
+		if coor.Z > max.Z {
 			max.Z = coor.Z
 		}
 	}
