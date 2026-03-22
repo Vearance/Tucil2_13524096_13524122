@@ -1,0 +1,48 @@
+# Tucil 2 Strategi Algoritma
+
+Program ini adalah voxelizer berbasis octree untuk file 3D `.obj`.
+Program membaca mesh segitiga dari file input, membangun octree hingga kedalaman tertentu (`max-depth`), lalu mengekspor hasil voxelisasi ke file `.obj` baru dengan nama `<nama-file>-voxed.obj`.
+
+## Requirement Program
+- Go (versi 1.25.5 dari `go.mod`)
+
+## Compile and Run
+Dari root project, jalankan:
+
+```bash
+mkdir -p bin
+go build -o bin/voxelizer ./src
+```
+
+## Cara Menjalankan dan Menggunakan Program
+Jalankan langsung tanpa kompilasi:
+
+```bash
+go run ./src <input.obj> <max-depth>
+```
+
+Atau jalankan binary hasil kompilasi:
+
+```bash
+./bin/voxelizer <input.obj> <max-depth>
+```
+
+Contoh:
+
+```bash
+go run ./src test/cow.obj 5
+```
+
+Parameter:
+- `<input.obj>`: path file `.obj` input
+- `<max-depth>`: kedalaman octree (bilangan bulat positif)
+
+Output:
+- File `.obj` hasil voxelisasi disimpan pada path yang sama dengan input, dengan suffix `-voxed.obj`
+- Program juga menampilkan statistik jumlah voxel, vertex, faces, node octree, dan waktu eksekusi
+
+## Author
+| Nama | NIM |
+|------|-----|
+| Moreno Syawali Ganda Sugita | 13524096 |
+| Nathaniel Christian | 13524122 |
