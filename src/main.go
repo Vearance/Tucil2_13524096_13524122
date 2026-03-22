@@ -39,21 +39,40 @@ func main() {
         fmt.Println("Error loading OBJ:", err)
         os.Exit(1)
     }
-    if len(vertex) == 0 {
-        fmt.Println("Error: OBJ has no vertices")
-        os.Exit(1)
-    }
 
-    if err := saveObject(output, vertex, triangles); err != nil {
+	bounding := getBoundingBox(vertex)
+	cube := getBoundingCube(bounding)
+
+	done := make(map[int]int)
+	removed := make(map[int]int)
+    root := buildTree(cube, triangles, 0, depth, done, removed)
+
+	var voxels []Voxel
+	getVoxel(root, &voxels)
+
+	meshVertex, meshFaces := voxelToMesh(voxels)
+
+    if err := saveObject(output, meshVertex, meshFaces); err != nil {
         fmt.Println("Error writing OBJ:", err)
         os.Exit(1)
     }
 
-    fmt.Println("Input OBJ:", input)
-    fmt.Println("Max depth:", depth)
-    fmt.Println("Vertices:", len(vertex))
-    fmt.Println("Triangles:", len(triangles))
-    fmt.Println("Output OBJ:", output)
-    fmt.Println("Runtime:", time.Since(start))
+    fmt.Println("Banyaknya voxel yang terbentuk:", len(voxels))
+    fmt.Println("Banyaknya vertex yang terbentuk:", len(meshVertex))
+    fmt.Println("Banyaknya faces yang terbentuk:", len(meshFaces))
+
+	fmt.Println("Statistik node octree yang terbentuk:")
+	for i := 1; i <= depth; i++ {
+		fmt.Printf("%d : %d\n", i, done[i])
+	}
+
+	fmt.Println("Statistik node yang tidak perlu ditelusuri:")
+	for i := 1; i <= depth; i++ {
+		fmt.Printf("%d : %d\n", i, removed[i])
+	}
+
+	fmt.Println("Kedalaman octree:", depth)
+	fmt.Println("Lama waktu program berjalan:", time.Since(start))
+	fmt.Println("Path dimana file .obj disimpan:", output)
 
 }
