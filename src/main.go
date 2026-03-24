@@ -6,6 +6,7 @@ import (
     "path/filepath"
 	"strconv"
 	"time"
+    "sync"
 )
 
 func outputPath(input string) string {
@@ -45,7 +46,8 @@ func main() {
 
 	done := make(map[int]int)
 	removed := make(map[int]int)
-    root := buildTree(cube, triangles, 0, depth, done, removed)
+	var mu sync.Mutex
+	root := buildTreeConcurrent(cube, triangles, 0, depth, done, removed, &mu)
 
 	var voxels []Voxel
 	getVoxel(root, &voxels)
