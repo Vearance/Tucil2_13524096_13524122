@@ -76,5 +76,6 @@ func main() {
 	fmt.Println("Kedalaman octree:", depth)
 	fmt.Println("Lama waktu program berjalan:", time.Since(start))
 	fmt.Println("Path dimana file .obj disimpan:", output)
-
+    fmt.Println("Membuka 3D Object Viewer...")
+	showViewer(meshVertex, meshFaces)
 }
