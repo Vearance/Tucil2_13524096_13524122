@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
-    "path/filepath"
+	"path/filepath"
 	"strconv"
+	"sync"
 	"time"
-    "sync"
 )
 
 func outputPath(input string) string {
@@ -26,6 +26,10 @@ func main() {
 
     input := os.Args[1]
     output := outputPath(input)
+    absOutput, err := filepath.Abs(output)
+    if err == nil {
+        output = absOutput
+    }
 
     depth, err := strconv.Atoi(os.Args[2])
     if err != nil || depth < 0 {
@@ -75,7 +79,7 @@ func main() {
 
 	fmt.Println("Kedalaman octree:", depth)
 	fmt.Println("Lama waktu program berjalan:", time.Since(start))
-	fmt.Println("Path dimana file .obj disimpan:", output)
     fmt.Println("Membuka 3D Object Viewer...")
 	showViewer(meshVertex, meshFaces)
+    fmt.Println("Path output:", output)
 }

@@ -7,12 +7,21 @@ Program membaca mesh segitiga dari file input, membangun octree hingga kedalaman
 - Go (versi 1.25.5 dari `go.mod`)
 
 ## Compile and Run
-Dari root project, jalankan:
+Dari root project, jalankan sesuai OS:
 
-```bash
-mkdir -p bin
-go build -o bin/voxelizer ./src
-```
+- Linux/macOS:
+
+	```bash
+	mkdir -p bin
+	go build -o bin/voxelizer ./src
+	```
+
+- Windows:
+
+	```powershell
+	mkdir bin
+	go build -o bin/voxelizer.exe ./src
+	```
 
 ## Cara Menjalankan dan Menggunakan Program
 Jalankan langsung tanpa kompilasi:
@@ -23,9 +32,17 @@ go run ./src <input.obj> <max-depth>
 
 Atau jalankan binary hasil kompilasi:
 
-```bash
-./bin/voxelizer <input.obj> <max-depth>
-```
+- Linux/macOS:
+
+	```bash
+	./bin/voxelizer <input.obj> <max-depth>
+	```
+
+- Windows:
+
+	```powershell
+	./bin/voxelizer.exe <input.obj> <max-depth>
+	```
 
 Contoh:
 
