@@ -76,7 +76,7 @@ func loadObject(path string) ([]Vertex, []Triangle, error) {
 
 			triangles = append(triangles, Triangle{v1, v2, v3})
 		} else {
-			return nil, nil, fmt.Errorf("line %d: baris tidak valid, hanya 'v x y z' atau 'f i j k'", lineNo)
+			continue;
 
 		}
 	}

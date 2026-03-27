@@ -39,7 +39,8 @@ Parameter:
 
 Output:
 - File `.obj` hasil voxelisasi disimpan pada path yang sama dengan input, dengan suffix `-voxed.obj`
-- Program juga menampilkan statistik jumlah voxel, vertex, faces, node octree, dan waktu eksekusi
+- Program menampilkan statistik jumlah voxel, vertex, faces, node octree, dan waktu eksekusi (dengan metode konkuren)
+- Program menampilkan viewer dari file `.obj` hasil voxelisasi
 
 ## Author
 | Nama | NIM |
