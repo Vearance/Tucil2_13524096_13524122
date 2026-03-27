@@ -1,5 +1,37 @@
 package main
 
+import "math"
+
+var cubeFaces = [][3]int{
+	{0, 1, 2}, {0, 2, 3},
+	{4, 6, 5}, {4, 7, 6},
+	{0, 5, 1}, {0, 4, 5},
+	{3, 2, 6}, {3, 6, 7},
+	{0, 3, 7}, {0, 7, 4},
+	{1, 5, 6}, {1, 6, 2},
+}
+
+func makeVertexKey(v Vertex) vertexKey {
+	return vertexKey{
+		X: math.Float64bits(v.X),
+		Y: math.Float64bits(v.Y),
+		Z: math.Float64bits(v.Z),
+	}
+}
+
+func sortedFaceKey(a, b, c int) [3]int {
+	if a > b {
+		a, b = b, a
+	}
+	if b > c {
+		b, c = c, b
+	}
+	if a > b {
+		a, b = b, a
+	}
+	return [3]int{a, b, c}
+}
+
 func getCubeVertex(cube Cube) []Vertex {
 	min := cube.Min
 	max := Vertex{min.X + cube.Size, min.Y + cube.Size, min.Z + cube.Size}
@@ -16,31 +48,44 @@ func getCubeVertex(cube Cube) []Vertex {
 	}
 }
 
-func cubeMesh(vertex *[]Vertex, faces *[][3]int, cube Cube) {
-	cubeVertex := getCubeVertex(cube)
-	base := len(*vertex) + 1
-	*vertex = append(*vertex, cubeVertex...)
-
-	cubeFace := [][3]int{
-		{0, 1, 2}, {0, 2, 3},
-		{4, 6, 5}, {4, 7, 6},
-		{0, 5, 1}, {0, 4, 5},
-		{3, 2, 6}, {3, 6, 7},
-		{0, 3, 7}, {0, 7, 4},
-		{1, 5, 6}, {1, 6, 2},
-	}
-
-	for _, face := range cubeFace {
-		*faces = append(*faces, [3]int{base + face[0], base + face[1], base + face[2]})
-	}
-}
-
 func voxelToMesh(voxels []Voxel) ([]Vertex, [][3]int) {
 	vertex := make([]Vertex, 0, len(voxels)*8)
 	faces := make([][3]int, 0, len(voxels)*12)
+	vertexIndex := make(map[vertexKey]int, len(voxels)*8)
+	faceSet := make(map[[3]int]struct{}, len(voxels)*12)
 
 	for _, voxel := range voxels {
-		cubeMesh(&vertex, &faces, voxel.Cube)
+		cubeVertex := getCubeVertex(voxel.Cube)
+
+		for _, face := range cubeFaces {
+			var tri [3]int
+
+			for i := 0; i < 3; i++ {
+				v := cubeVertex[face[i]]
+				key := makeVertexKey(v)
+
+				idx, found := vertexIndex[key]
+				if !found {
+					vertex = append(vertex, v)
+					idx = len(vertex)
+					vertexIndex[key] = idx
+				}
+
+				tri[i] = idx
+			}
+
+			if tri[0] == tri[1] || tri[1] == tri[2] || tri[0] == tri[2] {
+				continue
+			}
+
+			sortedKey := sortedFaceKey(tri[0], tri[1], tri[2])
+			if _, exists := faceSet[sortedKey]; exists {
+				continue
+			}
+
+			faceSet[sortedKey] = struct{}{}
+			faces = append(faces, tri)
+		}
 	}
 
 	return vertex, faces

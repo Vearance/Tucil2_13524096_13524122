@@ -31,3 +31,8 @@ type OctreeNode struct {
 type Voxel struct {
 	Cube Cube
 }
+
+// used as a map key to detect duplication.
+type vertexKey struct {
+	X, Y, Z uint64
+}
