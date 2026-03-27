@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-func outputPath(input string) string {
-    ext := filepath.Ext(input)
-    base := input
-    if ext != "" {
-        base = input[:len(input)-len(ext)]
-    }
-    return base + "-voxed.obj"
+func outputPath(input string, depth int) string {
+	ext := filepath.Ext(input)
+	base := input
+	if ext != "" {
+		base = input[:len(input)-len(ext)]
+	}
+	return fmt.Sprintf("%s-voxed-%d.obj", base, depth)
 }
 
 func main() {
@@ -25,16 +25,16 @@ func main() {
     }
 
     input := os.Args[1]
-    output := outputPath(input)
-    absOutput, err := filepath.Abs(output)
-    if err == nil {
-        output = absOutput
-    }
-
     depth, err := strconv.Atoi(os.Args[2])
     if err != nil || depth < 0 {
         fmt.Println("Error: <max-depth> can't be negative")
         os.Exit(1)
+    }
+
+    output := outputPath(input, depth)
+    absOutput, err := filepath.Abs(output)
+    if err == nil {
+        output = absOutput
     }
 
     start := time.Now()
